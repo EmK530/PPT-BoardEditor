@@ -11,7 +11,7 @@ namespace PPTBoardEditor_WPF {
                 return;
             }
 
-            int w = (int)canvas.Width, h = (int)canvas.Height;
+            int w = (int)(canvas.Width * 1.2), h = (int)(canvas.Height * 1.2);
             Bitmap image = new Bitmap(w, h);
 
             using (Graphics gfx = Graphics.FromImage(image)) {
@@ -50,7 +50,7 @@ namespace PPTBoardEditor_WPF {
                 return;
             }
 
-            int w = (int)canvas.Width, h = (int)canvas.Height;
+            int w = (int)(canvas.Width * 1.2), h = (int)(canvas.Height * 1.2);
             Bitmap image = new Bitmap(w, h);
 
             using (Graphics gfx = Graphics.FromImage(image)) {
