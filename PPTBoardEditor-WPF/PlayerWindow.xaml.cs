@@ -166,6 +166,78 @@ namespace PPTBoardEditor_WPF {
             if (e.LeftButton == MouseButtonState.Released && e.RightButton == MouseButtonState.Released)
                 canvasSelectorPressed = false;
         }
+        
+        bool pentomino = false;
+        
+        private void listQueue_KeyDown(object sender, KeyEventArgs e) {
+            int index = listQueue.SelectedIndex;
+            if (index == -1) index = listQueue.Items.Count;
+            
+            switch (e.Key) {
+                case Key.S:
+                    listQueue.Items.Insert(index, new Tetromino(0 + (pentomino? 8 : 0)));
+                    break;
+
+                case Key.Z:
+                    listQueue.Items.Insert(index, new Tetromino(1 + (pentomino ? 8 : 0)));
+                    break;
+
+                case Key.J:
+                    listQueue.Items.Insert(index, new Tetromino(2 + (pentomino ? 8 : 0)));
+                    break;
+
+                case Key.L:
+                    listQueue.Items.Insert(index, new Tetromino(3 + (pentomino ? 8 : 0)));
+                    break;
+
+                case Key.T:
+                    listQueue.Items.Insert(index, new Tetromino(4 + (pentomino ? 8 : 0)));
+                    break;
+
+                case Key.O:
+                    listQueue.Items.Insert(index, new Tetromino(5 + (pentomino ? 8 : 0)));
+                    break;
+
+                case Key.I:
+                    listQueue.Items.Insert(index, new Tetromino(6 + (pentomino ? 8 : 0)));
+                    break;
+
+                case Key.M:
+                    listQueue.Items.Insert(index, new Tetromino(7));
+                    break;
+
+                case Key.D5:
+                    pentomino = true;
+                    break;
+
+                case Key.Delete:
+                    if (index != listQueue.Items.Count) {
+                        listQueue.Items.RemoveAt(index);
+                        if (index == listQueue.Items.Count) {
+                            listQueue.SelectedIndex = index - 1;
+                        } else {
+                            listQueue.SelectedIndex = index;
+                        }
+                    }
+                    break;
+            }
+
+            e.Handled = true;
+        }
+
+        private void listQueue_KeyUp(object sender, KeyEventArgs e) {
+            if (e.Key == Key.D5) {
+                pentomino = false;
+            }
+
+            e.Handled = true;
+        }
+
+        private void listQueue_MouseDoubleClick(object sender, MouseEventArgs e) {
+            if (listQueue.SelectedIndex != -1) {
+                listQueue.Items.RemoveAt(listQueue.SelectedIndex);
+            }
+        }
 
         private void Window_Closed(object sender, EventArgs e) {
             Application.Current.Shutdown();
