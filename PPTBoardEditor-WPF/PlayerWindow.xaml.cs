@@ -16,7 +16,7 @@ using System.Windows.Threading;
 namespace PPTBoardEditor_WPF {
     public partial class PlayerWindow: Window {
         DispatcherTimer scanTimer = new DispatcherTimer() {
-            Interval = TimeSpan.FromMilliseconds(1)
+            Interval = TimeSpan.FromMilliseconds(50)
         };
 
         public PlayerWindow(int index) {
@@ -94,6 +94,71 @@ namespace PPTBoardEditor_WPF {
             UIHelper.drawSelector(ref canvasSelector, (int[])selectedColor.Clone(), active);
 
             Title = (boardAddress >= 0x08000000) ? GameHelper.PlayerName(playerID) : $"Player {windowIndex + 1}";
+        }
+
+        bool canvasBoardPressed = false;
+
+        private void CanvasBoard_MouseDown(object sender, MouseButtonEventArgs e) {
+            canvasBoardPressed = true;
+            CanvasBoard_MouseMove(sender, e);
+        }
+
+        private void CanvasBoard_MouseUp(object sender, MouseButtonEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Released && e.RightButton == MouseButtonState.Released)
+                canvasBoardPressed = false;
+        }
+
+        private void CanvasBoard_MouseMove(object sender, MouseEventArgs e) {
+            if (canvasBoardPressed) {
+                Point pt = e.GetPosition(canvasBoard);
+
+                int x = (int)Math.Floor(pt.X / 15);
+                int y = 39 - (int)Math.Floor(pt.Y / 15);
+                int boardAddress = GameHelper.BoardAddress(playerID);
+                
+                if (boardAddress >= 0x08000000 && 0 <= x && x <= 9 && 0 <= y && y <= 39 && board[x, y] != -2) {
+                    int pixelAddress = GameHelper.DirectRead(
+                        boardAddress + x * 0x08
+                    ) + y * 0x04;
+
+                    if (e.LeftButton == MouseButtonState.Pressed) {
+                        GameHelper.DirectWrite(pixelAddress, selectedColor[0]);
+                    } else if (e.RightButton == MouseButtonState.Pressed) {
+                        GameHelper.DirectWrite(pixelAddress, selectedColor[1]);
+                    }
+                   
+                }
+            }
+        }
+
+        bool canvasSelectorPressed = false;
+
+        private void CanvasSelector_MouseDown(object sender, MouseButtonEventArgs e) {
+            canvasSelectorPressed = true;
+            CanvasSelector_MouseMove(sender, e);
+        }
+
+        private void CanvasSelector_MouseMove(object sender, MouseEventArgs e) {
+            if (canvasSelectorPressed) {
+                int x = (int)Math.Floor(e.GetPosition(canvasBoard).X / 15);
+
+                if (GameHelper.BoardAddress(playerID) > 0x08000000 && 0 <= x && x <= 9) {
+                    if (x == 0) x = -1;
+                    else if (x != 9) x--;
+
+                    if (e.LeftButton == MouseButtonState.Pressed) {
+                        selectedColor[0] = x;
+                    }
+                    if (e.RightButton == MouseButtonState.Pressed) {
+                        selectedColor[1] = x;
+                    }
+                }
+            }
+        }
+
+        private void CanvasSelector_MouseUp(object sender, MouseButtonEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Released && e.RightButton == MouseButtonState.Released)
+                canvasSelectorPressed = false;
         }
 
         private void Window_Closed(object sender, EventArgs e) {
