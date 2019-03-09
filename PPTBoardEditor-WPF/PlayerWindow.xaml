@@ -20,10 +20,7 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="2 0 0 0">
-            <ListBox x:Name="listQueue" Margin="0 0 0 2" Width="30" Height="600" Background="#0A0A0A" Foreground="Gainsboro" BorderThickness="0">
-                <ListBoxItem HorizontalContentAlignment="Center">S</ListBoxItem>
-                <ListBoxItem HorizontalContentAlignment="Center">Z</ListBoxItem>
-            </ListBox>
+            <ListBox x:Name="listQueue" Margin="0 0 0 2" Width="30" Height="600" Background="#0A0A0A" Foreground="Gainsboro" BorderThickness="0" />
             <CheckBox x:Name="checkLoop" Margin="0 2 0 0" Width="30" Height="15" Background="#0A0A0A" Foreground="Gainsboro" BorderThickness="0" Content="🔁" VerticalContentAlignment="Center" />
         </StackPanel>
     </Grid>
