@@ -10,19 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PPTBoardEditor_WPF
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        public MainWindow()
-        {
+namespace PPTBoardEditor_WPF {
+    public partial class PlayerWindow: Window {
+        public PlayerWindow(int index) {
             InitializeComponent();
+        }
+
+        private void Window_Closed(object sender, EventArgs e) {
+            Application.Current.Shutdown();
         }
     }
 }
