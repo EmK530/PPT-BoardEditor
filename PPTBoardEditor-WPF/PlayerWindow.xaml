@@ -5,9 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PPTBoardEditor_WPF"
         mc:Ignorable="d"
-        Title="PlayerWindow" Height="450" Width="800"
-        Closed="Window_Closed">
-    <Grid>
-        
+        Title="PlayerWindow" Background="#101010" Width="220" Height="670" ResizeMode="NoResize"
+        Closed="Window_Closed" >
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="0 0 2 0">
+            <Canvas x:Name="canvasBoard" Margin="0 0 0 2" Width="150" Height="600" Background="#0A0A0A" />
+            <Canvas x:Name="canvasSelector" Margin="0 2 0 0" Width="150" Height="15" Background="#0A0A0A"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="2 0 0 0">
+            <ListBox x:Name="listQueue" Margin="0 0 0 2" Width="30" Height="600" Background="#0A0A0A" Foreground="Gainsboro" BorderThickness="0">
+                <ListBoxItem HorizontalContentAlignment="Center">S</ListBoxItem>
+                <ListBoxItem HorizontalContentAlignment="Center">Z</ListBoxItem>
+            </ListBox>
+            <CheckBox x:Name="checkLoop" Margin="0 2 0 0" Width="30" Height="15" Background="#0A0A0A" Foreground="Gainsboro" BorderThickness="0" Content="🔁" VerticalContentAlignment="Center" />
+        </StackPanel>
     </Grid>
 </Window>
