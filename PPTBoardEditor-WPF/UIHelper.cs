@@ -1,72 +1,101 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace PPTBoardEditor_WPF {
     class UIHelper {
-        private static void drawRectangle(ref Canvas canvas, double x, double y, double w, double h, Color c, Color b) {
-            Rectangle mino = new Rectangle() {
-                Width = w,
-                Height = h,
-                Stroke = new SolidColorBrush(b),
-                StrokeThickness = 1,
-                Fill = new SolidColorBrush(c)
-            };
+        public static void drawBoard(ref System.Windows.Controls.Image canvas, int[,] board, bool active) {
+            if (!active) {
+                canvas.Source = null;
+                return;
+            }
 
-            Canvas.SetLeft(mino, x);
-            Canvas.SetTop(mino, y);
+            int w = (int)canvas.Width, h = (int)canvas.Height;
+            Bitmap image = new Bitmap(w, h);
 
-            canvas.Children.Add(mino);
-        }
+            using (Graphics gfx = Graphics.FromImage(image)) {
+                gfx.FillRectangle(new SolidBrush(Color.FromArgb(10, 10, 10)), new Rectangle(0, 0, w, h));
 
-        public static void drawBoard(ref Canvas canvas, int[,] board, bool active) {
-            canvas.Children.Clear();
-            if (!active) return;
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 40; j++) {
+                        Rectangle mino = new Rectangle(i * (w / 10), (39 - j) * (h / 40), w / 10, h / 40);
+                        gfx.FillRectangle(new SolidBrush(Tetromino.BoardColor(board[i, j])), mino);
 
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 40; j++) {
-                    drawRectangle(ref canvas, i * (canvas.Width / 10), (39 - j) * (canvas.Height / 40), canvas.Width / 10, canvas.Height / 40, Tetromino.BoardColor(board[i, j]), Colors.Black);
+                        mino.Width--;
+                        mino.Height--;
+                        gfx.DrawRectangle(new Pen(Color.Black), mino);
+                    }
                 }
+
+                gfx.DrawLine(new Pen(Color.Red), 0, h / 2, w, h / 2);
+                gfx.Flush();
             }
 
-            //gfx.DrawLine(new Pen(Color.Red), 0, canvas.Height / 2, canvas.Width, canvas.Height / 2);
-            //gfx.Flush();
+            BitmapImage bitmap = new BitmapImage();
+            using (MemoryStream memory = new MemoryStream() {Position = 0}) {
+                image.Save(memory, ImageFormat.Bmp);
+                bitmap.BeginInit();
+                bitmap.StreamSource = memory;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+            }
+
+            canvas.Source = bitmap;
         }
 
-        public static void drawSelector(ref Canvas canvas, int[] colors, bool active) {
-            canvas.Children.Clear();
-            if (!active) return;
-
-            for (int i = 0; i < 10; i++) {
-                int j = i;
-                if (j == 0) j = -1;
-                else if (j != 9) j--;
-
-                drawRectangle(ref canvas, i * (canvas.Width / 10), 0, canvas.Width / 10, canvas.Height, Tetromino.BoardColor(j), Colors.Black);
+        public static void drawSelector(ref System.Windows.Controls.Image canvas, int[] colors, bool active) {
+            if (!active) {
+                canvas.Source = null;
+                return;
             }
 
-            for (int i = 0; i < 2; i++) {
-                if (colors[i] == 8) return;
-                if (colors[i] == -1) colors[i] = 0;
-                else if (colors[i] != 9) colors[i]++;
+            int w = (int)canvas.Width, h = (int)canvas.Height;
+            Bitmap image = new Bitmap(w, h);
+
+            using (Graphics gfx = Graphics.FromImage(image)) {
+                gfx.FillRectangle(new SolidBrush(Color.FromArgb(10, 10, 10)), new Rectangle(0, 0, w, h));
+
+                for (int i = 0; i < 10; i++) {
+                    int j = i;
+                    if (j == 0) j = -1;
+                    else if (j != 9) j--;
+
+                    Rectangle mino = new Rectangle(i * (w / 10), 0, w / 10, h);
+                    gfx.FillRectangle(new SolidBrush(Tetromino.BoardColor(j)), i * (w / 10), 0, w / 10, h);
+                    
+                    mino.Width--;
+                    mino.Height--;
+                    gfx.DrawRectangle(new Pen(Color.Black), mino);
+                }
+
+                for (int i = 0; i < 2; i++) {
+                    if (colors[i] == 8) return;
+                    if (colors[i] == -1) colors[i] = 0;
+                    else if (colors[i] != 9) colors[i]++;
+                }
+
+                gfx.DrawRectangle(new Pen(Color.White), colors[0] * (w / 10), 0, w / 10 - 1, h - 1);
+                gfx.DrawRectangle(new Pen(Color.Black), colors[0] * (w / 10) + 1, 1, w / 10 - 3, h - 3);
+
+                gfx.DrawRectangle(new Pen(Color.White), colors[1] * (w / 10) + 2, 2, w / 10 - 5, h - 5);
+                gfx.DrawRectangle(new Pen(Color.Black), colors[1] * (w / 10) + 3, 3, w / 10 - 7, h - 7);
+
+                gfx.Flush();
             }
 
-            drawRectangle(ref canvas, colors[0] * (canvas.Width / 10), 0, canvas.Width / 10, canvas.Height, Colors.Transparent, Colors.White);
-            drawRectangle(ref canvas, colors[0] * (canvas.Width / 10) + 1, 1, canvas.Width / 10 - 2, canvas.Height - 2, Colors.Transparent, Colors.Black);
 
-            drawRectangle(ref canvas, colors[1] * (canvas.Width / 10) + 2, 2, canvas.Width / 10 - 4, canvas.Height - 4, Colors.Transparent, Colors.White);
-            drawRectangle(ref canvas, colors[1] * (canvas.Width / 10) + 3, 3, canvas.Width / 10 - 6, canvas.Height - 6, Colors.Transparent, Colors.Black);
+
+            BitmapImage bitmap = new BitmapImage();
+            using (MemoryStream memory = new MemoryStream() { Position = 0 }) {
+                image.Save(memory, ImageFormat.Bmp);
+                bitmap.BeginInit();
+                bitmap.StreamSource = memory;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+            }
+
+            canvas.Source = bitmap;
         }
     }
 }

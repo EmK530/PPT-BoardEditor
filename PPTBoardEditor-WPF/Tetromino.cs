@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
+using System.Drawing;
 
 namespace PPTBoardEditor_WPF {
     public class Tetromino {
@@ -24,45 +12,44 @@ namespace PPTBoardEditor_WPF {
         }
 
         public static Color BoardColor(int index) {
-            
             switch (index) {
-                case 0: return (Color)ColorConverter.ConvertFromString("#0F0");
-                case 1: return (Color)ColorConverter.ConvertFromString("#F00");
-                case 2: return (Color)ColorConverter.ConvertFromString("#00F");
-                case 3: return (Color)ColorConverter.ConvertFromString("#F40");
-                case 4: return (Color)ColorConverter.ConvertFromString("#40F");
-                case 5: return (Color)ColorConverter.ConvertFromString("#FF0");
-                case 6: return (Color)ColorConverter.ConvertFromString("#0FF");
+                case 0: return System.Drawing.Color.FromArgb(0, 255, 0);
+                case 1: return System.Drawing.Color.FromArgb(255, 0, 0);
+                case 2: return System.Drawing.Color.FromArgb(0, 0, 255);
+                case 3: return System.Drawing.Color.FromArgb(255, 63, 0);
+                case 4: return System.Drawing.Color.FromArgb(63, 0, 255);
+                case 5: return System.Drawing.Color.FromArgb(255, 255, 0);
+                case 6: return System.Drawing.Color.FromArgb(0, 255, 255);
                 case 7:
-                case 8: return Colors.Goldenrod;
-                case 9: return (Color)ColorConverter.ConvertFromString("#FFF");
-                case -2: return (Color)ColorConverter.ConvertFromString("#000");
-                case -1: return Colors.Transparent;
+                case 8: return System.Drawing.Color.Goldenrod;
+                case 9: return System.Drawing.Color.FromArgb(255, 255, 255);
+                case -2: return System.Drawing.Color.FromArgb(0, 0, 0);
+                case -1: return System.Drawing.Color.Transparent;
             }
 
-            return (Color)ColorConverter.ConvertFromString("#444");
+            return System.Drawing.Color.FromArgb(63, 63, 63);
         }
 
         public static Color Color(int index) {
             switch (index) {
                 case 0:
-                case 8: return (Color)ColorConverter.ConvertFromString("#0F0");
+                case 8: return System.Drawing.Color.FromArgb(0, 255, 0);
                 case 1:
-                case 9: return (Color)ColorConverter.ConvertFromString("#F00");
+                case 9: return System.Drawing.Color.FromArgb(255, 0, 0);
                 case 2:
-                case 10: return (Color)ColorConverter.ConvertFromString("#00F");
+                case 10: return System.Drawing.Color.FromArgb(0, 0, 255);
                 case 3:
-                case 11: return (Color)ColorConverter.ConvertFromString("#F40");
+                case 11: return System.Drawing.Color.FromArgb(255, 63, 0);
                 case 4:
-                case 12: return (Color)ColorConverter.ConvertFromString("#40F");
+                case 12: return System.Drawing.Color.FromArgb(63, 0, 255);
                 case 5:
-                case 13: return (Color)ColorConverter.ConvertFromString("#FF0");
+                case 13: return System.Drawing.Color.FromArgb(255, 255, 0);
                 case 6:
-                case 14: return (Color)ColorConverter.ConvertFromString("#0FF");
-                case 7: return Colors.Goldenrod;
+                case 14: return System.Drawing.Color.FromArgb(0, 255, 255);
+                case 7: return System.Drawing.Color.Goldenrod;
             }
 
-            return Colors.Transparent;
+            return System.Drawing.Color.Transparent;
         }
 
         public override string ToString() {

@@ -15,8 +15,8 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="0 0 2 0">
-            <Canvas x:Name="canvasBoard" Margin="0 0 0 2" Width="150" Height="600" Background="#0A0A0A" MouseDown="CanvasBoard_MouseDown" MouseUp="CanvasBoard_MouseUp" MouseMove="CanvasBoard_MouseMove" />
-            <Canvas x:Name="canvasSelector" Margin="0 2 0 0" Width="150" Height="15" Background="#0A0A0A" MouseDown="CanvasSelector_MouseDown" MouseUp="CanvasSelector_MouseUp" MouseMove="CanvasSelector_MouseMove" />
+            <Image x:Name="canvasBoard" Margin="0 0 0 2" Width="150" Height="600" MouseDown="CanvasBoard_MouseDown" MouseUp="CanvasBoard_MouseUp" MouseMove="CanvasBoard_MouseMove" />
+            <Image x:Name="canvasSelector" Margin="0 2 0 0" Width="150" Height="15" MouseDown="CanvasSelector_MouseDown" MouseUp="CanvasSelector_MouseUp" MouseMove="CanvasSelector_MouseMove" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="2 0 0 0">

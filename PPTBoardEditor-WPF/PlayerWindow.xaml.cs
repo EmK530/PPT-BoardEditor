@@ -16,7 +16,7 @@ using System.Windows.Threading;
 namespace PPTBoardEditor_WPF {
     public partial class PlayerWindow: Window {
         DispatcherTimer scanTimer = new DispatcherTimer() {
-            Interval = TimeSpan.FromMilliseconds(50)
+            Interval = TimeSpan.FromMilliseconds(1)
         };
 
         public PlayerWindow(int index) {
